@@ -543,10 +543,6 @@ export namespace Components {
     }
     interface IcDrawer {
         /**
-          * The aria label applied to the drawer. This is required when the heading slot is used.
-         */
-        "ariaLabel": string;
-        /**
           * The area within which the drawer should be contained. When set to "parent", the value of the parent element's `position` CSS property must not be "static".
          */
         "boundary": IcDrawerBoundary;
@@ -1771,10 +1767,6 @@ declare namespace LocalJSX {
         "value"?: IcDateValueFormat;
     }
     interface IcDrawer {
-        /**
-          * The aria label applied to the drawer. This is required when the heading slot is used.
-         */
-        "ariaLabel"?: string;
         /**
           * The area within which the drawer should be contained. When set to "parent", the value of the parent element's `position` CSS property must not be "static".
          */

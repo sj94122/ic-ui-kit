@@ -68,11 +68,6 @@ export class Drawer {
   @State() isScrollable: boolean;
 
   /**
-   * The aria label applied to the drawer. This is required when the heading slot is used.
-   */
-  @Prop() ariaLabel: string = "";
-
-  /**
    * The area within which the drawer should be contained. When set to "parent", the value of the parent element's `position` CSS property must not be "static".
    */
   @Prop() boundary: IcDrawerBoundary = "viewport";
@@ -181,7 +176,7 @@ export class Drawer {
   }
 
   componentWillLoad(): void {
-    if (this.el.parentElement && this.boundary === "parent") {
+    if (this.el.parentElement && this.isParentBoundary()) {
       this.el.parentElement.style.overflow = "hidden";
     }
   }
@@ -205,10 +200,22 @@ export class Drawer {
       this.getInteractiveElements
     );
 
+    this.contentAreaMutationObserver?.disconnect();
     this.hostMutationObserver?.disconnect();
     this.marginResizeObserver?.disconnect();
+    this.parentElResizeObserver?.disconnect();
     this.scrollResizeObserver?.disconnect();
   }
+
+  private isArrowTrigger = () => this.trigger === "arrow";
+
+  private isTopOrBottomPosition = () =>
+    this.position === "top" || this.position === "bottom";
+
+  private isParentBoundary = () => this.boundary === "parent";
+
+  private preventActionAreaChevronOverlap = () =>
+    this.isTopOrBottomPosition() && this.isArrowTrigger();
 
   private renderChevronButton = () => (
     <ic-button
@@ -228,10 +235,6 @@ export class Drawer {
       onClick={(ev: Event) => this.handleDrawerExpanded(false, ev)}
     ></ic-button>
   );
-
-  private preventActionAreaChevronOverlap = () =>
-    (this.position === "top" || this.position === "bottom") &&
-    this.trigger === "arrow";
 
   // Moves action area to above the chevron button
   // if drawer width is too narrow to display to the right of it
@@ -306,7 +309,8 @@ export class Drawer {
     });
   };
 
-  // Set inner drawer panel size to make sliding animation to work correctly when boundary is "parent"
+  // Set inner drawer panel size to make sliding animation work correctly when boundary is "parent"
+  // and also prevent overflow when parent element is smaller than drawer size
   private setInnerDrawerPanelSize = () => {
     const isRightOrLeftPosition =
       this.position === "right" || this.position === "left";
@@ -336,9 +340,9 @@ export class Drawer {
     }
   };
 
+  // Add resize observer to manage action area margin
+  // when position is top or bottom and trigger is "arrow" - otherwise remove resize observer
   private setMarginResizeObserver = () => {
-    // Stops resize observer running - for when position is changed to left or right
-    // or when trigger is "controlled"
     if (this.marginResizeObserver) {
       this.marginResizeObserver.disconnect();
       this.marginResizeObserver = undefined;
@@ -353,13 +357,15 @@ export class Drawer {
     this.updateActionAreaMargin();
   };
 
+  // Add resize observer to manage inner drawer panel size when boundary is "parent"
+  // Remove resize observer if boundary is "viewport"
   private setParentElResizeObserver = () => {
     if (this.parentElResizeObserver) {
       this.parentElResizeObserver.disconnect();
       this.parentElResizeObserver = undefined;
     }
 
-    if (this.boundary === "parent") {
+    if (this.isParentBoundary()) {
       this.parentElResizeObserver = new ResizeObserver(() => {
         this.setInnerDrawerPanelSize();
       });
@@ -370,6 +376,7 @@ export class Drawer {
     }
   };
 
+  // Add resize observer to manage scroll behaviour for long content
   private setScrollResizeObserver = () => {
     this.scrollResizeObserver = new ResizeObserver(() => {
       this.handleContentAreaScroll();
@@ -419,6 +426,8 @@ export class Drawer {
     }
 
     if (this.expanded) {
+      // Make chevron button get re-focused on open
+      // so screen reader announces that focus is now on an element with role "dialog"
       this.chevronButton?.shadowRoot?.querySelector("button")?.blur();
 
       setTimeout(() => {
@@ -441,6 +450,7 @@ export class Drawer {
     } else {
       const collapsingClass = "ic-drawer-collapsing";
       this.el.classList.add(collapsingClass);
+
       setTimeout(() => {
         this.el.classList.remove(collapsingClass);
         if (this.trigger === "controlled") {
@@ -449,7 +459,8 @@ export class Drawer {
           this.chevronButton?.setFocus();
         }
       }, this.TRANSITION_DURATION);
-      this.focusedElementIndex = 0; // Reset to first element for when drawer is reopened
+
+      this.focusedElementIndex = 0; // Reset to first element in case drawer is reopened
     }
   };
 
@@ -494,7 +505,7 @@ export class Drawer {
             !expanded ? this.handleDrawerExpanded(false, ev) : undefined
           }
         >
-          {trigger === "arrow" && this.renderChevronButton()}
+          {this.isArrowTrigger() && this.renderChevronButton()}
           <div
             ref={(el) => (this.innerDrawerPanelEl = el)}
             class="inner-drawer-panel"
@@ -550,8 +561,7 @@ export class Drawer {
                 ></div>
               </div>
               {(isSlotUsed(this.el, "actions") ||
-                position === "bottom" ||
-                position === "top") && (
+                this.isTopOrBottomPosition()) && (
                 <div ref={(el) => (this.actionAreaEl = el)} class="action-area">
                   <slot name="actions" />
                 </div>

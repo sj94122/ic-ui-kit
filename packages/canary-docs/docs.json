@@ -4544,30 +4544,6 @@
       "usage": {},
       "props": [
         {
-          "name": "ariaLabel",
-          "type": "string",
-          "complexType": {
-            "original": "string",
-            "resolved": "string",
-            "references": {}
-          },
-          "mutable": false,
-          "attr": "aria-label",
-          "reflectToAttr": false,
-          "docs": "The aria label applied to the drawer. This is required when the heading slot is used.",
-          "docsTags": [],
-          "default": "\"\"",
-          "values": [
-            {
-              "type": "string"
-            }
-          ],
-          "optional": false,
-          "required": false,
-          "getter": false,
-          "setter": false
-        },
-        {
           "name": "boundary",
           "type": "\"parent\" | \"viewport\"",
           "complexType": {
