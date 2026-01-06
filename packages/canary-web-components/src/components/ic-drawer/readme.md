@@ -52,8 +52,8 @@
 
 ### Depends on
 
-- ic-button
-- ic-typography
+- [ic-button](../ic-button)
+- [ic-typography](../ic-typography)
 
 ### Graph
 ```mermaid

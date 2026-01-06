@@ -11,8 +11,6 @@ import {
   Watch,
 } from "@stencil/core";
 
-import { IcPosition } from "../../utils/types";
-
 import chevronIcon from "../../assets/chevron-icon.svg";
 
 import closeIcon from "../../assets/close-icon.svg";
@@ -27,7 +25,7 @@ import {
   slottedInteractiveElements,
 } from "../../utils/helpers";
 import { IcDrawerBoundary, IcDrawerExpandedDetail } from "./ic-drawer.types";
-import { IcSizes, IcThemeMode } from "../../utils/types";
+import { IcPosition, IcSizes, IcThemeMode } from "../../utils/types";
 
 /**
  * @slot heading - Content will be rendered in the title area, in place of the heading.
@@ -82,7 +80,7 @@ export class Drawer {
   @Prop() chevronButtonAriaLabel?: string;
 
   /**
-   * The aria-label of the close button (displayed when `trigger="controlled"`). This will default to "Close drawer".
+   * The aria-label of the close / "X" button (displayed when `trigger="controlled"`). This will default to "Close drawer".
    */
   @Prop() closeButtonAriaLabel?: string;
 
@@ -205,6 +203,11 @@ export class Drawer {
     this.marginResizeObserver?.disconnect();
     this.parentElResizeObserver?.disconnect();
     this.scrollResizeObserver?.disconnect();
+
+    if (this.el.parentElement && this.isParentBoundary()) {
+      // Remove hidden overflow which was added to parent element
+      this.el.parentElement.style.overflow = "";
+    }
   }
 
   private isArrowTrigger = () => this.trigger === "arrow";
@@ -219,7 +222,7 @@ export class Drawer {
 
   private renderChevronButton = () => (
     <ic-button
-      ref={(el: HTMLIcButtonElement) => (this.chevronButton = el)}
+      ref={(el) => (this.chevronButton = el)}
       class="chevron-btn"
       theme={this.theme}
       variant="icon-tertiary"
@@ -524,7 +527,7 @@ export class Drawer {
               </div>
               {!hideCloseButton && trigger === "controlled" && (
                 <ic-button
-                  className="close-btn"
+                  class="close-btn"
                   variant="icon-tertiary"
                   theme={theme}
                   onClick={(ev: Event) => this.handleDrawerExpanded(false, ev)}
