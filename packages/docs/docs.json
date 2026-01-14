@@ -3500,6 +3500,7 @@
         "ic-alert",
         "ic-back-to-top",
         "ic-dialog",
+        "ic-drawer",
         "ic-horizontal-scroll",
         "ic-menu",
         "ic-menu-item",
@@ -3540,6 +3541,9 @@
           "ic-button"
         ],
         "ic-dialog": [
+          "ic-button"
+        ],
+        "ic-drawer": [
           "ic-button"
         ],
         "ic-horizontal-scroll": [
@@ -6768,6 +6772,476 @@
         ],
         "ic-side-navigation": [
           "ic-divider"
+        ]
+      }
+    },
+    {
+      "filePath": "src/components/ic-drawer/ic-drawer.tsx",
+      "encapsulation": "shadow",
+      "tag": "ic-drawer",
+      "readme": "# ic-drawer\n\n\n",
+      "docs": "",
+      "docsTags": [
+        {
+          "name": "slot",
+          "text": "heading - Content will be rendered in the title area, in place of the heading."
+        },
+        {
+          "name": "slot",
+          "text": "heading-adornment - Content will be rendered in the title area, to the left of the heading."
+        },
+        {
+          "name": "slot",
+          "text": "actions - Content will be rendered in the action area, adjacent to the title area."
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "boundary",
+          "type": "\"parent\" | \"viewport\"",
+          "complexType": {
+            "original": "IcDrawerBoundary",
+            "resolved": "\"parent\" | \"viewport\"",
+            "references": {
+              "IcDrawerBoundary": {
+                "location": "import",
+                "path": "./ic-drawer.types",
+                "id": "src/components/ic-drawer/ic-drawer.types.tsx::IcDrawerBoundary"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "boundary",
+          "reflectToAttr": false,
+          "docs": "The area within which the drawer should be contained. When set to \"parent\", the value of the parent element's `position` CSS property must not be \"static\".",
+          "docsTags": [],
+          "default": "\"viewport\"",
+          "values": [
+            {
+              "value": "parent",
+              "type": "string"
+            },
+            {
+              "value": "viewport",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "chevronButtonAriaLabel",
+          "type": "string | undefined",
+          "complexType": {
+            "original": "string",
+            "resolved": "string | undefined",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "chevron-button-aria-label",
+          "reflectToAttr": false,
+          "docs": "The aria-label of the chevron button (displayed when `trigger=\"arrow\"`). This will default to \"Open drawer\" / \"Close drawer\".",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "closeButtonAriaLabel",
+          "type": "string | undefined",
+          "complexType": {
+            "original": "string",
+            "resolved": "string | undefined",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-button-aria-label",
+          "reflectToAttr": false,
+          "docs": "The aria-label of the close / \"X\" button (displayed when `trigger=\"controlled\"`). This will default to \"Close drawer\".",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "closeOnBackdropClick",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-on-backdrop-click",
+          "reflectToAttr": false,
+          "docs": "If `true`, the drawer will close when the backdrop is clicked.",
+          "docsTags": [],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": true,
+          "attr": "expanded",
+          "reflectToAttr": true,
+          "docs": "If `true`, the drawer will display in an expanded state.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "heading",
+          "type": "string | undefined",
+          "complexType": {
+            "original": "string",
+            "resolved": "string | undefined",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "heading",
+          "reflectToAttr": false,
+          "docs": "The heading of the drawer. This is required, unless a slotted heading is used.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "hideCloseButton",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "hide-close-button",
+          "reflectToAttr": false,
+          "docs": "If set to `true`, the X (close) button which is displayed when `trigger` is set to \"controlled\" will be hidden.",
+          "docsTags": [],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "message",
+          "type": "string | undefined",
+          "complexType": {
+            "original": "string",
+            "resolved": "string | undefined",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "message",
+          "reflectToAttr": false,
+          "docs": "The body content of the drawer.",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "undefined"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "position",
+          "type": "\"bottom\" | \"left\" | \"right\" | \"top\"",
+          "complexType": {
+            "original": "IcPosition",
+            "resolved": "\"bottom\" | \"left\" | \"right\" | \"top\"",
+            "references": {
+              "IcPosition": {
+                "location": "import",
+                "path": "../../utils/types",
+                "id": "src/utils/types.ts::IcPosition"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "position",
+          "reflectToAttr": false,
+          "docs": "The position of the drawer.",
+          "docsTags": [],
+          "default": "\"right\"",
+          "values": [
+            {
+              "value": "bottom",
+              "type": "string"
+            },
+            {
+              "value": "left",
+              "type": "string"
+            },
+            {
+              "value": "right",
+              "type": "string"
+            },
+            {
+              "value": "top",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "size",
+          "type": "\"large\" | \"medium\" | \"small\"",
+          "complexType": {
+            "original": "IcSizes",
+            "resolved": "\"large\" | \"medium\" | \"small\"",
+            "references": {
+              "IcSizes": {
+                "location": "import",
+                "path": "../../utils/types",
+                "id": "src/utils/types.ts::IcSizes"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "size",
+          "reflectToAttr": false,
+          "docs": "The size of the expanded drawer.",
+          "docsTags": [],
+          "default": "\"medium\"",
+          "values": [
+            {
+              "value": "large",
+              "type": "string"
+            },
+            {
+              "value": "medium",
+              "type": "string"
+            },
+            {
+              "value": "small",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"dark\" | \"inherit\" | \"light\"",
+          "complexType": {
+            "original": "IcThemeMode",
+            "resolved": "\"dark\" | \"inherit\" | \"light\"",
+            "references": {
+              "IcThemeMode": {
+                "location": "import",
+                "path": "../../utils/types",
+                "id": "src/utils/types.ts::IcThemeMode"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Sets the drawer to the dark or light theme colors. \"inherit\" will set the color based on the system settings or ic-theme component.",
+          "docsTags": [],
+          "default": "\"inherit\"",
+          "values": [
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "inherit",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "trigger",
+          "type": "\"arrow\" | \"controlled\"",
+          "complexType": {
+            "original": "\"arrow\" | \"controlled\"",
+            "resolved": "\"arrow\" | \"controlled\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "trigger",
+          "reflectToAttr": false,
+          "docs": "The method in which the drawer is expanded.",
+          "docsTags": [],
+          "default": "\"arrow\"",
+          "values": [
+            {
+              "value": "arrow",
+              "type": "string"
+            },
+            {
+              "value": "controlled",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "icDrawerExpanded",
+          "detail": "IcDrawerExpandedDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "IcDrawerExpandedDetail",
+            "resolved": "IcDrawerExpandedDetail",
+            "references": {
+              "IcDrawerExpandedDetail": {
+                "location": "import",
+                "path": "./ic-drawer.types",
+                "id": "src/components/ic-drawer/ic-drawer.types.tsx::IcDrawerExpandedDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the drawer is collapsed and expanded.",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "keydown",
+          "target": "document",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [
+        {
+          "name": "--ic-drawer-height",
+          "annotation": "prop",
+          "docs": "the height of the expanded top or bottom drawer."
+        },
+        {
+          "name": "--ic-drawer-width",
+          "annotation": "prop",
+          "docs": "the width of the expanded left or right drawer."
+        },
+        {
+          "name": "--ic-z-index-drawer",
+          "annotation": "prop",
+          "docs": "z-index of drawer."
+        }
+      ],
+      "slots": [
+        {
+          "name": "actions",
+          "docs": "Content will be rendered in the action area, adjacent to the title area."
+        },
+        {
+          "name": "heading",
+          "docs": "Content will be rendered in the title area, in place of the heading."
+        },
+        {
+          "name": "heading-adornment",
+          "docs": "Content will be rendered in the title area, to the left of the heading."
+        }
+      ],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [
+        "ic-button",
+        "ic-typography"
+      ],
+      "dependencyGraph": {
+        "ic-drawer": [
+          "ic-button",
+          "ic-typography"
+        ],
+        "ic-button": [
+          "ic-typography",
+          "ic-loading-indicator",
+          "ic-tooltip"
+        ],
+        "ic-loading-indicator": [
+          "ic-typography"
+        ],
+        "ic-tooltip": [
+          "ic-typography"
         ]
       }
     },
@@ -23089,6 +23563,7 @@
         "ic-data-row",
         "ic-dialog",
         "ic-divider",
+        "ic-drawer",
         "ic-empty-state",
         "ic-footer",
         "ic-footer-link-group",
@@ -23158,6 +23633,9 @@
           "ic-typography"
         ],
         "ic-divider": [
+          "ic-typography"
+        ],
+        "ic-drawer": [
           "ic-typography"
         ],
         "ic-empty-state": [
@@ -23471,6 +23949,21 @@
       "declaration": "export type IcDividerWeights = \"thin\" | \"medium\" | \"thick\" | \"very-thick\";",
       "docstring": "",
       "path": "src/components/ic-divider/ic-divider.types.tsx"
+    },
+    "src/components/ic-drawer/ic-drawer.types.tsx::IcDrawerBoundary": {
+      "declaration": "export type IcDrawerBoundary = \"viewport\" | \"parent\";",
+      "docstring": "",
+      "path": "src/components/ic-drawer/ic-drawer.types.tsx"
+    },
+    "src/utils/types.ts::IcPosition": {
+      "declaration": "export type IcPosition = \"top\" | \"right\" | \"bottom\" | \"left\";",
+      "docstring": "",
+      "path": "src/utils/types.ts"
+    },
+    "src/components/ic-drawer/ic-drawer.types.tsx::IcDrawerExpandedDetail": {
+      "declaration": "export interface IcDrawerExpandedDetail {\n  expanded: boolean;\n}",
+      "docstring": "",
+      "path": "src/components/ic-drawer/ic-drawer.types.tsx"
     },
     "src/components/ic-empty-state/ic-empty-state.types.ts::IcEmptyStateAlignment": {
       "declaration": "export type IcEmptyStateAlignment = \"left\" | \"center\" | \"right\";",

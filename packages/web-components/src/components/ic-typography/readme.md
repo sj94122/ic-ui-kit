@@ -37,6 +37,7 @@
  - [ic-data-row](../ic-data-row)
  - [ic-dialog](../ic-dialog)
  - [ic-divider](../ic-divider)
+ - [ic-drawer](../ic-drawer)
  - [ic-empty-state](../ic-empty-state)
  - [ic-footer](../ic-footer)
  - [ic-footer-link-group](../ic-footer-link-group)
@@ -81,6 +82,7 @@ graph TD;
   ic-data-row --> ic-typography
   ic-dialog --> ic-typography
   ic-divider --> ic-typography
+  ic-drawer --> ic-typography
   ic-empty-state --> ic-typography
   ic-footer --> ic-typography
   ic-footer-link-group --> ic-typography

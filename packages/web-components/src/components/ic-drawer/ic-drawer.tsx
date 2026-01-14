@@ -57,9 +57,9 @@ export class Drawer {
   private innerDrawerPanelEl?: HTMLDivElement;
   private interactiveElementList: HTMLElement[] = [];
   private marginResizeObserver?: ResizeObserver;
-  private parentElResizeObserver?: ResizeObserver;
+  private innerPanelResizeObserver?: ResizeObserver;
   private scrollResizeObserver?: ResizeObserver;
-  private sourceElement?: HTMLElement;
+  private triggerElement?: HTMLElement;
 
   @Element() el: HTMLIcDrawerElement;
 
@@ -71,7 +71,7 @@ export class Drawer {
   @Prop() boundary: IcDrawerBoundary = "viewport";
   @Watch("boundary")
   watchBoundaryHandler() {
-    this.setParentElResizeObserver();
+    this.setInnerPanelResizeObserver();
   }
 
   /**
@@ -148,7 +148,7 @@ export class Drawer {
   @Event() icDrawerExpanded: EventEmitter<IcDrawerExpandedDetail>;
 
   @Listen("keydown", { target: "document" })
-  handleKeyboard(ev: KeyboardEvent): void {
+  handleKeyDown(ev: KeyboardEvent): void {
     if (this.expanded) {
       switch (ev.key) {
         case "Tab":
@@ -187,7 +187,7 @@ export class Drawer {
     this.setContentAreaMutationObserver();
     this.setHostMutationObserver();
     this.setMarginResizeObserver();
-    this.setParentElResizeObserver();
+    this.setInnerPanelResizeObserver();
     this.setScrollResizeObserver();
   }
 
@@ -201,7 +201,7 @@ export class Drawer {
     this.contentAreaMutationObserver?.disconnect();
     this.hostMutationObserver?.disconnect();
     this.marginResizeObserver?.disconnect();
-    this.parentElResizeObserver?.disconnect();
+    this.innerPanelResizeObserver?.disconnect();
     this.scrollResizeObserver?.disconnect();
 
     if (this.el.parentElement && this.isParentBoundary()) {
@@ -235,7 +235,7 @@ export class Drawer {
           ? this.DEFAULT_CLOSE_BUTTON_ARIA_LABEL
           : this.DEFAULT_OPEN_BUTTON_ARIA_LABEL)
       }
-      onClick={(ev: Event) => this.handleDrawerExpanded(false, ev)}
+      onClick={(ev: Event) => this.handleDrawerExpanded(false, ev)} // FROM UNIT TESTS - FIND OUT WHY THIS FUNCTION IS BEING EXECUTED TWICE
     ></ic-button>
   );
 
@@ -253,8 +253,7 @@ export class Drawer {
         isSlotUsed(this.el, "actions")
       ) {
         const drawerWidth = this.el.getBoundingClientRect().width;
-        const actionAreaWidth =
-          this.actionAreaEl?.getBoundingClientRect().width;
+        const actionAreaWidth = this.actionAreaEl.getBoundingClientRect().width;
         const threshold = drawerWidth / 2 - 48;
 
         if (actionAreaWidth > threshold) {
@@ -270,15 +269,19 @@ export class Drawer {
       this.el.shadowRoot?.querySelectorAll("ic-button") || []
     );
 
-    const contentArea = this.el.shadowRoot?.querySelector(
-      ".content-area"
-    ) as HTMLElement;
-    this.isScrollable = contentArea.scrollHeight > contentArea.clientHeight;
+    // const contentArea = this.el.shadowRoot?.querySelector(
+    //   ".content-area"
+    // ) as HTMLElement;
 
-    // Include content area as an interactive element if it is scrollable
-    if (contentArea && this.isScrollable) {
-      contentArea.tabIndex = 0;
-      this.interactiveElementList.push(contentArea);
+    if (this.contentAreaEl) {
+      this.isScrollable =
+        this.contentAreaEl.scrollHeight > this.contentAreaEl.clientHeight;
+
+      // Include content area as an interactive element if it is scrollable
+      if (this.isScrollable) {
+        this.contentAreaEl.tabIndex = 0;
+        this.interactiveElementList.push(this.contentAreaEl);
+      }
     }
 
     this.interactiveElementList = [
@@ -296,7 +299,7 @@ export class Drawer {
   private setContentAreaMutationObserver = () => {
     const { contentAreaSlot, contentAreaMutationObserver } =
       refreshInteractiveElementsOnSlotChange(
-        this.el.shadowRoot?.querySelector("#drawer-content") || null,
+        this.el.shadowRoot?.querySelector(".drawer-content") || null,
         this.getInteractiveElements
       );
     this.contentAreaSlot = contentAreaSlot;
@@ -304,9 +307,9 @@ export class Drawer {
   };
 
   private setHostMutationObserver = () => {
-    this.hostMutationObserver = new MutationObserver((mutationList) =>
-      renderDynamicChildSlots(mutationList, "actions", this)
-    );
+    this.hostMutationObserver = new MutationObserver((mutationList) => {
+      renderDynamicChildSlots(mutationList, "actions", this);
+    });
     this.hostMutationObserver.observe(this.el, {
       childList: true,
     });
@@ -325,6 +328,7 @@ export class Drawer {
         )
         .trim()
     );
+
     const drawerSizePx =
       drawerSizeRem *
       parseFloat(getComputedStyle(document.documentElement).fontSize); // Convert REM to PX for following calculations
@@ -362,18 +366,18 @@ export class Drawer {
 
   // Add resize observer to manage inner drawer panel size when boundary is "parent"
   // Remove resize observer if boundary is "viewport"
-  private setParentElResizeObserver = () => {
-    if (this.parentElResizeObserver) {
-      this.parentElResizeObserver.disconnect();
-      this.parentElResizeObserver = undefined;
+  private setInnerPanelResizeObserver = () => {
+    if (this.innerPanelResizeObserver) {
+      this.innerPanelResizeObserver.disconnect();
+      this.innerPanelResizeObserver = undefined;
     }
 
     if (this.isParentBoundary()) {
-      this.parentElResizeObserver = new ResizeObserver(() => {
+      this.innerPanelResizeObserver = new ResizeObserver(() => {
         this.setInnerDrawerPanelSize();
       });
       if (this.el.parentElement) {
-        this.parentElResizeObserver.observe(this.el.parentElement);
+        this.innerPanelResizeObserver.observe(this.el.parentElement);
       }
       this.setInnerDrawerPanelSize();
     }
@@ -437,7 +441,7 @@ export class Drawer {
         this.getInteractiveElements();
 
         if (this.trigger === "controlled") {
-          this.sourceElement = document.activeElement as HTMLElement;
+          this.triggerElement = document.activeElement as HTMLElement;
         }
 
         if (this.interactiveElementList.length > 0) {
@@ -457,8 +461,9 @@ export class Drawer {
       setTimeout(() => {
         this.el.classList.remove(collapsingClass);
         if (this.trigger === "controlled") {
-          this.sourceElement?.focus();
+          this.triggerElement?.focus();
         } else {
+          console.log("chevronButton is", this.chevronButton);
           this.chevronButton?.setFocus();
         }
       }, this.TRANSITION_DURATION);
@@ -551,7 +556,7 @@ export class Drawer {
                   ref={(el) => (this.contentAreaShadowTopEl = el)}
                   class="content-area-shadow-top"
                 ></div>
-                <div id="drawer-content">
+                <div class="drawer-content">
                   <slot name="message">
                     <ic-typography>
                       <p>{this.message}</p>

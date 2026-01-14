@@ -4615,7 +4615,7 @@
           "mutable": false,
           "attr": "close-button-aria-label",
           "reflectToAttr": false,
-          "docs": "The aria-label of the close button (displayed when `trigger=\"controlled\"`). This will default to \"Close drawer\".",
+          "docs": "The aria-label of the close / \"X\" button (displayed when `trigger=\"controlled\"`). This will default to \"Close drawer\".",
           "docsTags": [],
           "values": [
             {

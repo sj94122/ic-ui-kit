@@ -89,6 +89,7 @@ Type: `Promise<void>`
  - [ic-alert](../ic-alert)
  - [ic-back-to-top](../ic-back-to-top)
  - [ic-dialog](../ic-dialog)
+ - [ic-drawer](../ic-drawer)
  - [ic-horizontal-scroll](../ic-horizontal-scroll)
  - [ic-menu](../ic-menu)
  - [ic-menu-item](../ic-menu-item)
@@ -120,6 +121,7 @@ graph TD;
   ic-alert --> ic-button
   ic-back-to-top --> ic-button
   ic-dialog --> ic-button
+  ic-drawer --> ic-button
   ic-horizontal-scroll --> ic-button
   ic-menu --> ic-button
   ic-menu-item --> ic-button

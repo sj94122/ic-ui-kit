@@ -5,13 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IcActivationTypes, IcAdditionalFieldTypes, IcAlignment, IcAriaLive, IcAutocompleteTypes, IcAutocorrectStates, IcBlurEventDetail, IcBrand, IcBrandForeground, IcButtonTooltipPlacement, IcColor, IcDeviceSizes, IcEmphasisType, IcIconPlacementOptions, IcInformationStatusOrEmpty, IcMenuOption, IcMultiValueEventDetail, IcOrientation, IcSearchMatchPositions, IcSelectMethodTypes, IcSelectTypes, IcSizes, IcSizesNoLarge, IcStatusVariants, IcThemeMode, IcThemeSettings, IcTypographyVariants, IcValidationAriaLive, IcValueEventDetail } from "./utils/types";
+import { IcActivationTypes, IcAdditionalFieldTypes, IcAlignment, IcAriaLive, IcAutocompleteTypes, IcAutocorrectStates, IcBlurEventDetail, IcBrand, IcBrandForeground, IcButtonTooltipPlacement, IcColor, IcDeviceSizes, IcEmphasisType, IcIconPlacementOptions, IcInformationStatusOrEmpty, IcMenuOption, IcMultiValueEventDetail, IcOrientation, IcPosition, IcSearchMatchPositions, IcSelectMethodTypes, IcSelectTypes, IcSizes, IcSizesNoLarge, IcStatusVariants, IcThemeMode, IcThemeSettings, IcTypographyVariants, IcValidationAriaLive, IcValueEventDetail } from "./utils/types";
 import { IcButtonTypes, IcButtonVariants } from "./components/ic-button/ic-button.types";
 import { IcBackToTopPositions, IcBackToTopVariants } from "./components/ic-back-to-top/ic-back-to-top.types";
 import { IcBadgePositions, IcBadgeTypes, IcBadgeVariants } from "./components/ic-badge/ic-badge.types";
 import { IcChangeEventDetail } from "./components/ic-checkbox-group/ic-checkbox-group.types";
 import { IcProtectiveMarkings } from "./components/ic-classification-banner/ic-classification-banner.types";
 import { IcDividerLabelPlacement, IcDividerStyles, IcDividerWeights } from "./components/ic-divider/ic-divider.types";
+import { IcDrawerBoundary, IcDrawerExpandedDetail } from "./components/ic-drawer/ic-drawer.types";
 import { IcEmptyStateAlignment } from "./components/ic-empty-state/ic-empty-state.types";
 import { IcFooterBreakpoints } from "./components/ic-footer/ic-footer.types";
 import { IcHeroContentAlignments } from "./components/ic-hero/ic-hero.types";
@@ -35,13 +36,14 @@ import { IcTabClickEventDetail, IcTabSelectEventDetail } from "./components/ic-t
 import { IcAriaAutocompleteTypes, IcTextFieldInputModes, IcTextFieldKeydownEventDetail, IcTextFieldTypes } from "./components/ic-text-field/ic-text-field.types";
 import { IcChangeEventDetail as IcChangeEventDetail3 } from "./components/ic-toggle-button-group/ic-toggle-button-group.types";
 import { IcTooltipPlacements } from "./components/ic-tooltip/ic-tooltip.types";
-export { IcActivationTypes, IcAdditionalFieldTypes, IcAlignment, IcAriaLive, IcAutocompleteTypes, IcAutocorrectStates, IcBlurEventDetail, IcBrand, IcBrandForeground, IcButtonTooltipPlacement, IcColor, IcDeviceSizes, IcEmphasisType, IcIconPlacementOptions, IcInformationStatusOrEmpty, IcMenuOption, IcMultiValueEventDetail, IcOrientation, IcSearchMatchPositions, IcSelectMethodTypes, IcSelectTypes, IcSizes, IcSizesNoLarge, IcStatusVariants, IcThemeMode, IcThemeSettings, IcTypographyVariants, IcValidationAriaLive, IcValueEventDetail } from "./utils/types";
+export { IcActivationTypes, IcAdditionalFieldTypes, IcAlignment, IcAriaLive, IcAutocompleteTypes, IcAutocorrectStates, IcBlurEventDetail, IcBrand, IcBrandForeground, IcButtonTooltipPlacement, IcColor, IcDeviceSizes, IcEmphasisType, IcIconPlacementOptions, IcInformationStatusOrEmpty, IcMenuOption, IcMultiValueEventDetail, IcOrientation, IcPosition, IcSearchMatchPositions, IcSelectMethodTypes, IcSelectTypes, IcSizes, IcSizesNoLarge, IcStatusVariants, IcThemeMode, IcThemeSettings, IcTypographyVariants, IcValidationAriaLive, IcValueEventDetail } from "./utils/types";
 export { IcButtonTypes, IcButtonVariants } from "./components/ic-button/ic-button.types";
 export { IcBackToTopPositions, IcBackToTopVariants } from "./components/ic-back-to-top/ic-back-to-top.types";
 export { IcBadgePositions, IcBadgeTypes, IcBadgeVariants } from "./components/ic-badge/ic-badge.types";
 export { IcChangeEventDetail } from "./components/ic-checkbox-group/ic-checkbox-group.types";
 export { IcProtectiveMarkings } from "./components/ic-classification-banner/ic-classification-banner.types";
 export { IcDividerLabelPlacement, IcDividerStyles, IcDividerWeights } from "./components/ic-divider/ic-divider.types";
+export { IcDrawerBoundary, IcDrawerExpandedDetail } from "./components/ic-drawer/ic-drawer.types";
 export { IcEmptyStateAlignment } from "./components/ic-empty-state/ic-empty-state.types";
 export { IcFooterBreakpoints } from "./components/ic-footer/ic-footer.types";
 export { IcHeroContentAlignments } from "./components/ic-hero/ic-hero.types";
@@ -826,6 +828,56 @@ export namespace Components {
           * The thickness of the divider.
          */
         "weight"?: IcDividerWeights;
+    }
+    interface IcDrawer {
+        /**
+          * The area within which the drawer should be contained. When set to "parent", the value of the parent element's `position` CSS property must not be "static".
+         */
+        "boundary": IcDrawerBoundary;
+        /**
+          * The aria-label of the chevron button (displayed when `trigger="arrow"`). This will default to "Open drawer" / "Close drawer".
+         */
+        "chevronButtonAriaLabel"?: string;
+        /**
+          * The aria-label of the close / "X" button (displayed when `trigger="controlled"`). This will default to "Close drawer".
+         */
+        "closeButtonAriaLabel"?: string;
+        /**
+          * If `true`, the drawer will close when the backdrop is clicked.
+         */
+        "closeOnBackdropClick": boolean;
+        /**
+          * If `true`, the drawer will display in an expanded state.
+         */
+        "expanded": boolean;
+        /**
+          * The heading of the drawer. This is required, unless a slotted heading is used.
+         */
+        "heading"?: string;
+        /**
+          * If set to `true`, the X (close) button which is displayed when `trigger` is set to "controlled" will be hidden.
+         */
+        "hideCloseButton": boolean;
+        /**
+          * The body content of the drawer.
+         */
+        "message"?: string;
+        /**
+          * The position of the drawer.
+         */
+        "position": IcPosition;
+        /**
+          * The size of the expanded drawer.
+         */
+        "size": IcSizes;
+        /**
+          * Sets the drawer to the dark or light theme colors. "inherit" will set the color based on the system settings or ic-theme component.
+         */
+        "theme": IcThemeMode;
+        /**
+          * The method in which the drawer is expanded.
+         */
+        "trigger": "arrow" | "controlled";
     }
     interface IcEmptyState {
         /**
@@ -2741,6 +2793,10 @@ export interface IcDialogCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIcDialogElement;
 }
+export interface IcDrawerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIcDrawerElement;
+}
 export interface IcFooterCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIcFooterElement;
@@ -3031,6 +3087,23 @@ declare global {
     var HTMLIcDividerElement: {
         prototype: HTMLIcDividerElement;
         new (): HTMLIcDividerElement;
+    };
+    interface HTMLIcDrawerElementEventMap {
+        "icDrawerExpanded": IcDrawerExpandedDetail;
+    }
+    interface HTMLIcDrawerElement extends Components.IcDrawer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIcDrawerElementEventMap>(type: K, listener: (this: HTMLIcDrawerElement, ev: IcDrawerCustomEvent<HTMLIcDrawerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIcDrawerElementEventMap>(type: K, listener: (this: HTMLIcDrawerElement, ev: IcDrawerCustomEvent<HTMLIcDrawerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIcDrawerElement: {
+        prototype: HTMLIcDrawerElement;
+        new (): HTMLIcDrawerElement;
     };
     interface HTMLIcEmptyStateElement extends Components.IcEmptyState, HTMLStencilElement {
     }
@@ -3683,6 +3756,7 @@ declare global {
         "ic-data-row": HTMLIcDataRowElement;
         "ic-dialog": HTMLIcDialogElement;
         "ic-divider": HTMLIcDividerElement;
+        "ic-drawer": HTMLIcDrawerElement;
         "ic-empty-state": HTMLIcEmptyStateElement;
         "ic-footer": HTMLIcFooterElement;
         "ic-footer-link": HTMLIcFooterLinkElement;
@@ -4501,6 +4575,60 @@ declare namespace LocalJSX {
           * The thickness of the divider.
          */
         "weight"?: IcDividerWeights;
+    }
+    interface IcDrawer {
+        /**
+          * The area within which the drawer should be contained. When set to "parent", the value of the parent element's `position` CSS property must not be "static".
+         */
+        "boundary"?: IcDrawerBoundary;
+        /**
+          * The aria-label of the chevron button (displayed when `trigger="arrow"`). This will default to "Open drawer" / "Close drawer".
+         */
+        "chevronButtonAriaLabel"?: string;
+        /**
+          * The aria-label of the close / "X" button (displayed when `trigger="controlled"`). This will default to "Close drawer".
+         */
+        "closeButtonAriaLabel"?: string;
+        /**
+          * If `true`, the drawer will close when the backdrop is clicked.
+         */
+        "closeOnBackdropClick"?: boolean;
+        /**
+          * If `true`, the drawer will display in an expanded state.
+         */
+        "expanded"?: boolean;
+        /**
+          * The heading of the drawer. This is required, unless a slotted heading is used.
+         */
+        "heading"?: string;
+        /**
+          * If set to `true`, the X (close) button which is displayed when `trigger` is set to "controlled" will be hidden.
+         */
+        "hideCloseButton"?: boolean;
+        /**
+          * The body content of the drawer.
+         */
+        "message"?: string;
+        /**
+          * Emitted when the drawer is collapsed and expanded.
+         */
+        "onIcDrawerExpanded"?: (event: IcDrawerCustomEvent<IcDrawerExpandedDetail>) => void;
+        /**
+          * The position of the drawer.
+         */
+        "position"?: IcPosition;
+        /**
+          * The size of the expanded drawer.
+         */
+        "size"?: IcSizes;
+        /**
+          * Sets the drawer to the dark or light theme colors. "inherit" will set the color based on the system settings or ic-theme component.
+         */
+        "theme"?: IcThemeMode;
+        /**
+          * The method in which the drawer is expanded.
+         */
+        "trigger"?: "arrow" | "controlled";
     }
     interface IcEmptyState {
         /**
@@ -6518,6 +6646,7 @@ declare namespace LocalJSX {
         "ic-data-row": IcDataRow;
         "ic-dialog": IcDialog;
         "ic-divider": IcDivider;
+        "ic-drawer": IcDrawer;
         "ic-empty-state": IcEmptyState;
         "ic-footer": IcFooter;
         "ic-footer-link": IcFooterLink;
@@ -6592,6 +6721,7 @@ declare module "@stencil/core" {
             "ic-data-row": LocalJSX.IcDataRow & JSXBase.HTMLAttributes<HTMLIcDataRowElement>;
             "ic-dialog": LocalJSX.IcDialog & JSXBase.HTMLAttributes<HTMLIcDialogElement>;
             "ic-divider": LocalJSX.IcDivider & JSXBase.HTMLAttributes<HTMLIcDividerElement>;
+            "ic-drawer": LocalJSX.IcDrawer & JSXBase.HTMLAttributes<HTMLIcDrawerElement>;
             "ic-empty-state": LocalJSX.IcEmptyState & JSXBase.HTMLAttributes<HTMLIcEmptyStateElement>;
             "ic-footer": LocalJSX.IcFooter & JSXBase.HTMLAttributes<HTMLIcFooterElement>;
             "ic-footer-link": LocalJSX.IcFooterLink & JSXBase.HTMLAttributes<HTMLIcFooterLinkElement>;

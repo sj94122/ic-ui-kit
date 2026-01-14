@@ -887,6 +887,60 @@ export function handleFocusTrapTabKeyPress(
 }
 
 /**
+ * Sets up listener and mutation observer to refresh interactive elements on slot changes. Used for focus trapping.
+ * @param contentWrapper - content wrapper element
+ * @param getInteractiveElements - function to set interactive elements
+ */
+export const refreshInteractiveElementsOnSlotChange = (
+  contentWrapper: HTMLElement | null,
+  getInteractiveElements: () => void
+): {
+  contentAreaSlot: HTMLSlotElement | null;
+  contentAreaMutationObserver: MutationObserver | null;
+} => {
+  let contentAreaSlot: HTMLSlotElement | null = null;
+  let contentAreaMutationObserver: MutationObserver | null = null;
+
+  if (contentWrapper) {
+    contentAreaSlot = contentWrapper.querySelector("slot");
+
+    // Detect changes to slotted elements
+    contentAreaSlot?.addEventListener("slotchange", getInteractiveElements);
+
+    contentAreaMutationObserver = new MutationObserver(() => {
+      getInteractiveElements();
+    });
+
+    // Detect changes to children of slotted elements
+    getSlotElements(contentWrapper)?.forEach((el) => {
+      contentAreaMutationObserver?.observe(el, {
+        childList: true,
+        subtree: true,
+      });
+    });
+  }
+
+  return { contentAreaSlot, contentAreaMutationObserver };
+};
+
+/**
+ * Removes listener and disconnects mutation observer for slot changes. Used for focus trapping.
+ * @param contentAreaSlotMutationObserver - mutation observer for content area slot
+ * @param contentAreaSlot - content area slot element
+ * @param getInteractiveElements - function to set interactive elements
+ */
+export const removeInteractiveElementSlotChangeListener = (
+  contentAreaSlot: HTMLSlotElement | null | undefined,
+  contentAreaSlotMutationObserver: MutationObserver | null,
+  getInteractiveElements: () => void
+) => {
+  if (contentAreaSlot) {
+    contentAreaSlot.removeEventListener("slotchange", getInteractiveElements);
+    contentAreaSlotMutationObserver?.disconnect();
+  }
+};
+
+/**
  * Determines whether an element should be skipped when focusing interactive elements. Used for focus trapping.
  * @param element - element to check
  */
