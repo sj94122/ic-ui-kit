@@ -16,13 +16,8 @@ module.exports = {
   ],
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-postcss",
     "@storybook/addon-a11y",
-    "@storybook/addon-mdx-gfm",
-    "storybook-addon-performance",
-    "@storybook/addon-webpack5-compiler-babel",
-    "@storybook/addon-docs",
+    "@storybook/addon-docs"
   ],
   framework: {
     name: "@storybook/react-webpack5",
